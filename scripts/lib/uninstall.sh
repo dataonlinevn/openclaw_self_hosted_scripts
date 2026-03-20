@@ -20,7 +20,7 @@ do_uninstall() {
         return 0
     fi
 
-    read -rp "Bạn có chắc muốn gỡ bỏ OpenClaw? Dữ liệu trong ${INSTALL_DIR} sẽ bị xóa. (y/N): " confirm
+    read_tty -rp "Bạn có chắc muốn gỡ bỏ OpenClaw? Dữ liệu trong ${INSTALL_DIR} sẽ bị xóa. (y/N): " confirm
     if [[ "${confirm}" != "y" && "${confirm}" != "Y" ]]; then
         print_info "Đã hủy."
         return 0

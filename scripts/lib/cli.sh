@@ -57,7 +57,7 @@ do_openclaw_cli() {
         echo ""
         echo -e "  ${C_BRAND}0) Quay lại menu chính${C_RESET}"
         echo ""
-        read -rp "$(echo -e "${C_BRAND}Chọn [0-6]: ${C_RESET}")" choice
+        read_tty -rp "$(echo -e "${C_BRAND}Chọn [0-6]: ${C_RESET}")" choice
 
         case "${choice}" in
             0) return 0 ;;
@@ -92,14 +92,14 @@ _cli_models() {
         echo "  ├── 4) auth      — Thêm/cấu hình API key"
         echo "  └── 0) Quay lại"
         echo ""
-        read -rp "$(echo -e "${C_BRAND}  Chọn [0-4]: ${C_RESET}")" c
+        read_tty -rp "$(echo -e "${C_BRAND}  Chọn [0-4]: ${C_RESET}")" c
         case "${c}" in
             0) break ;;
             1) _run_cli models status ;;
             2) _run_cli models list ;;
             3)
                 echo -e "  ${C_DIM}Ví dụ: google/gemini-1.5-flash | openai/gpt-4o | anthropic/claude-sonnet-4-5${C_RESET}"
-                read -rp "  Nhập model: " m
+                read_tty -rp "  Nhập model: " m
                 [[ -n "$m" ]] && _run_cli models set "$m"
                 ;;
             4) _run_cli models auth add ;;
@@ -116,13 +116,13 @@ _cli_pairing() {
         echo "  ├── 2) approve   — Duyệt DM (cần kênh + code từ app)"
         echo "  └── 0) Quay lại"
         echo ""
-        read -rp "$(echo -e "${C_BRAND}  Chọn [0-2]: ${C_RESET}")" c
+        read_tty -rp "$(echo -e "${C_BRAND}  Chọn [0-2]: ${C_RESET}")" c
         case "${c}" in
             0) break ;;
             1) _run_cli pairing list ;;
             2)
-                read -rp "  Kênh (vd: telegram): " ch
-                read -rp "  Mã pairing (từ Telegram/Discord): " code
+                read_tty -rp "  Kênh (vd: telegram): " ch
+                read_tty -rp "  Mã pairing (từ Telegram/Discord): " code
                 if [[ -n "$ch" && -n "$code" ]]; then
                     _run_cli pairing approve "$ch" "$code"
                 else
@@ -143,13 +143,13 @@ _cli_devices() {
         echo "  ├── 3) approve   — Duyệt pending mới nhất (--latest)"
         echo "  └── 0) Quay lại"
         echo ""
-        read -rp "$(echo -e "${C_BRAND}  Chọn [0-3]: ${C_RESET}")" c
+        read_tty -rp "$(echo -e "${C_BRAND}  Chọn [0-3]: ${C_RESET}")" c
         case "${c}" in
             0) break ;;
             1) _run_cli devices list ;;
             2)
                 echo -e "  ${C_DIM}Ví dụ Request ID: 25042d97-86ac-4fe4-9737-288a8e129f9b (không dùng cột Device).${C_RESET}"
-                read -rp "  Request ID: " id
+                read_tty -rp "  Request ID: " id
                 [[ -n "$id" ]] && _run_cli devices approve "$id"
                 ;;
             3) _run_cli devices approve --latest ;;
@@ -167,16 +167,16 @@ _cli_config() {
         echo "  ├── 3) validate  — Kiểm tra config"
         echo "  └── 0) Quay lại"
         echo ""
-        read -rp "$(echo -e "${C_BRAND}  Chọn [0-3]: ${C_RESET}")" c
+        read_tty -rp "$(echo -e "${C_BRAND}  Chọn [0-3]: ${C_RESET}")" c
         case "${c}" in
             0) break ;;
             1)
-                read -rp "  Path (vd: agents.defaults.model.primary): " path
+                read_tty -rp "  Path (vd: agents.defaults.model.primary): " path
                 [[ -n "$path" ]] && _run_cli config get "$path"
                 ;;
             2)
-                read -rp "  Path: " path
-                read -rp "  Giá trị: " val
+                read_tty -rp "  Path: " path
+                read_tty -rp "  Giá trị: " val
                 if [[ -n "$path" && -n "$val" ]]; then
                     _run_cli config set "$path" "$val"
                 fi
@@ -203,19 +203,19 @@ _cli_other() {
         echo "  ├── 10) status             — Trạng thái gateway"
         echo "  └──  0) Quay lại"
         echo ""
-        read -rp "$(echo -e "${C_BRAND}  Chọn [0-10]: ${C_RESET}")" c
+        read_tty -rp "$(echo -e "${C_BRAND}  Chọn [0-10]: ${C_RESET}")" c
         case "${c}" in
             0) break ;;
             1) _run_cli doctor ;;
             2) _run_cli directory self --channel telegram ;;
             3) _run_cli channels status ;;
             4)
-                read -rp "  Kênh (vd: zalouser, telegram): " ch
+                read_tty -rp "  Kênh (vd: zalouser, telegram): " ch
                 [[ -n "$ch" ]] && _run_cli channels login --channel "$ch"
                 ;;
             5) _run_cli plugins list ;;
             6)
-                read -rp "  Plugin (vd: @openclaw/zalouser): " plug
+                read_tty -rp "  Plugin (vd: @openclaw/zalouser): " plug
                 [[ -n "$plug" ]] && _run_cli plugins install "$plug"
                 ;;
             7) _run_cli logs --follow ;;

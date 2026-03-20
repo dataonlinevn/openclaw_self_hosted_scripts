@@ -42,6 +42,17 @@ print_welcome() {
 }
 
 # -----------------------------------------------------------------------------
+# Đọc từ terminal điều khiển (stdin có thể là pipe khi: curl … | sudo bash)
+# -----------------------------------------------------------------------------
+read_tty() {
+    if [[ -r /dev/tty ]] && [[ -c /dev/tty ]]; then
+        read -r "$@" < /dev/tty
+    else
+        read -r "$@"
+    fi
+}
+
+# -----------------------------------------------------------------------------
 # Quyền & xác nhận
 # -----------------------------------------------------------------------------
 check_root() {
@@ -70,10 +81,10 @@ confirm() {
     local default="${2:-y}"
     local reply
     if [[ "$default" == "y" ]]; then
-        read -r -p "$(echo -e "${C_BRAND}$prompt [Y/n]: ${C_RESET}")" reply
+        read_tty -r -p "$(echo -e "${C_BRAND}$prompt [Y/n]: ${C_RESET}")" reply
         reply="${reply:-y}"
     else
-        read -r -p "$(echo -e "${C_BRAND}$prompt [y/N]: ${C_RESET}")" reply
+        read_tty -r -p "$(echo -e "${C_BRAND}$prompt [y/N]: ${C_RESET}")" reply
         reply="${reply:-n}"
     fi
     [[ "$reply" =~ ^[Yy]$ ]]

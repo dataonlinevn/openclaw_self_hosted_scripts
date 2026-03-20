@@ -117,7 +117,7 @@ main() {
 
     while true; do
         print_main_menu
-        read -rp "$(echo -e "${C_BRAND}Chọn tùy chọn [0-5]: ${C_RESET}")" choice
+        read_tty -rp "$(echo -e "${C_BRAND}Chọn tùy chọn [0-5]: ${C_RESET}")" choice
         case "${choice}" in
             1)
                 do_install
