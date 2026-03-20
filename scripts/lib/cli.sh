@@ -138,19 +138,22 @@ _cli_devices() {
     while true; do
         echo ""
         echo -e "${C_BRAND}  Devices (trình duyệt)${C_RESET}"
-        echo "  ├── 1) list      — Xem thiết bị đã ghép + chờ duyệt"
-        echo "  ├── 2) approve   — Duyệt thiết bị (nhập device ID từ list)"
+        echo "  ├── 1) list      — Xem pending + đã ghép"
+        echo "  ├── 2) approve   — Duyệt pending (Request ID = UUID ở cột Request, không phải chuỗi Device)"
+        echo "  ├── 3) approve   — Duyệt pending mới nhất (--latest)"
         echo "  └── 0) Quay lại"
         echo ""
-        read -rp "$(echo -e "${C_BRAND}  Chọn [0-2]: ${C_RESET}")" c
+        read -rp "$(echo -e "${C_BRAND}  Chọn [0-3]: ${C_RESET}")" c
         case "${c}" in
             0) break ;;
             1) _run_cli devices list ;;
             2)
-                read -rp "  Device ID (từ devices list): " id
+                echo -e "  ${C_DIM}Ví dụ Request ID: 25042d97-86ac-4fe4-9737-288a8e129f9b (không dùng cột Device).${C_RESET}"
+                read -rp "  Request ID: " id
                 [[ -n "$id" ]] && _run_cli devices approve "$id"
                 ;;
-            *) print_warning "Chọn 0-2" ;;
+            3) _run_cli devices approve --latest ;;
+            *) print_warning "Chọn 0-3" ;;
         esac
     done
 }

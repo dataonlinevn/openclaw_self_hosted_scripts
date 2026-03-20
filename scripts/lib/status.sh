@@ -159,18 +159,28 @@ check_os_status() {
 }
 
 # -----------------------------------------------------------------------------
-# URL & token (rút gọn khi in)
+# URL đầy đủ + token (chạy trên máy chủ; không ghi log công khai token)
 # -----------------------------------------------------------------------------
 check_access_info() {
-    if [[ -f "${INSTALL_DIR}/.env" ]]; then
-        local token ip
-        token=$(grep OPENCLAW_GATEWAY_TOKEN "${INSTALL_DIR}/.env" | cut -d= -f2-)
-        ip=$(hostname -I 2>/dev/null | awk '{print $1}')
-        if [[ -n "${token}" ]]; then
-            print_info "Gateway URL: http://${ip:-localhost}:${GATEWAY_PORT}"
-            print_info "Gateway Token: ${token:0:16}..."
-        fi
+    if [[ ! -f "${INSTALL_DIR}/.env" ]]; then
+        return 0
     fi
+    local token ip
+    token=$(grep -m1 '^OPENCLAW_GATEWAY_TOKEN=' "${INSTALL_DIR}/.env" | cut -d= -f2-)
+    token=$(printf '%s' "$token" | tr -d '\r')
+    ip=$(hostname -I 2>/dev/null | awk '{print $1}')
+    if [[ -z "${token}" ]]; then
+        print_warning "Gateway Token: không đọc được từ .env"
+        return 0
+    fi
+    print_info "Gateway URL (LAN):     http://${ip:-?}:${GATEWAY_PORT}"
+    print_info "Gateway URL (localhost): http://127.0.0.1:${GATEWAY_PORT}"
+    echo -e "  ${C_DIM}Control UI / WebSocket: ưu tiên mở bằng localhost hoặc HTTPS (tránh lỗi device identity trên IP LAN).${C_RESET}"
+    print_info "Cổng bridge (nội bộ):  ${BRIDGE_PORT} (cùng host với gateway trong Compose)"
+    echo ""
+    print_info "Gateway Token (đầy đủ):"
+    echo -e "  ${C_SUCCESS}${token}${C_RESET}"
+    echo -e "  ${C_DIM}Không chia sẻ token; đổi token nếu lộ — sửa OPENCLAW_GATEWAY_TOKEN trong .env rồi restart gateway.${C_RESET}"
 }
 
 # -----------------------------------------------------------------------------

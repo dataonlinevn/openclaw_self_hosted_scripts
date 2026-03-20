@@ -71,12 +71,17 @@ EOF
     local config_dir="${INSTALL_DIR}/config"
     local config_file="${config_dir}/openclaw.json"
     if [[ ! -f "${config_file}" ]]; then
-        cat > "${config_file}" << 'JSONEOF'
+        # Không bật dangerouslyAllowHostHeaderOriginFallback — security audit báo DANGEROUS / hạ chống DNS rebinding.
+        # Control UI: ưu tiên http://127.0.0.1 hoặc HTTPS + allowedOrigins theo proxy. Chi tiết: docs.openclaw.ai/gateway/security
+        cat > "${config_file}" << JSONEOF
 {
   "gateway": {
     "mode": "local",
     "controlUi": {
-      "dangerouslyAllowHostHeaderOriginFallback": true
+      "allowedOrigins": [
+        "http://127.0.0.1:${GATEWAY_PORT}",
+        "http://localhost:${GATEWAY_PORT}"
+      ]
     }
   },
   "tools": {
@@ -197,6 +202,10 @@ do_install() {
     ip=$(hostname -I | awk '{print $1}')
     print_info "Gateway: http://${ip}:${GATEWAY_PORT}"
     print_info "Gateway Token: $(grep OPENCLAW_GATEWAY_TOKEN "${INSTALL_DIR}/.env" | cut -d= -f2)"
+    echo ""
+    print_warning "Control UI (web): trình duyệt cần ngữ cảnh bảo mật (HTTPS hoặc localhost). Mở http://${ip}:${GATEWAY_PORT} từ máy khác có thể báo lỗi \"device identity\"."
+    print_info "  → Cách thường dùng: SSH tunnel — ssh -N -L ${GATEWAY_PORT}:127.0.0.1:${GATEWAY_PORT} user@${ip} — rồi trên máy bạn mở http://127.0.0.1:${GATEWAY_PORT}"
+    print_info "  → Hoặc HTTPS (Caddy/nginx/Tailscale Serve). Chi tiết: https://docs.openclaw.ai/gateway/security"
     echo ""
     print_info "Cấu hình qua CLI: chạy script → chọn 3) Cấu hình OpenClaw (CLI)"
     print_info "  onboard | models set <provider>/<model> | pairing list | pairing approve | devices list | devices approve"
