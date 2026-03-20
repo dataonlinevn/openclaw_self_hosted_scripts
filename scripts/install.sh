@@ -5,16 +5,50 @@
 # install.sh — Entry: menu chính, nạp lib/
 # -----------------------------------------------------------------------------
 
+# curl … | bash không set BASH_SOURCE[0] như file: lấy mặc định trước khi bật -u
+_raw_install="${BASH_SOURCE[0]:-}"
+
+# -----------------------------------------------------------------------------
+# One-liner: chỉ có install.sh trên stdin → tải tarball repo rồi exec bản đầy đủ
+# -----------------------------------------------------------------------------
+_bootstrap_from_github() {
+    local repo branch work root
+    repo="${DATAONLINE_INSTALLER_REPO:-dataonlinevn/openclaw_self_hosted_scripts}"
+    branch="${DATAONLINE_INSTALLER_BRANCH:-main}"
+    work="$(mktemp -d)"
+    if ! curl -fsSL "https://codeload.github.com/${repo}/tar.gz/${branch}" | tar -xz -C "${work}"; then
+        rm -rf "${work}"
+        echo "[LỖI] Không tải được gh:${repo} (nhánh ${branch}). Kiểm tra mạng." >&2
+        echo "      Thử: git clone https://github.com/${repo}.git && cd openclaw_self_hosted_scripts && sudo ./scripts/install.sh" >&2
+        exit 1
+    fi
+    root="$(find "${work}" -mindepth 1 -maxdepth 1 -type d | head -1)"
+    if [[ -z "${root}" ]] || [[ ! -f "${root}/scripts/lib/utils.sh" ]]; then
+        rm -rf "${work}"
+        echo "[LỖI] Giải nén thiếu scripts/lib/ (repo ${repo})." >&2
+        exit 1
+    fi
+    # Giữ thư mục tạm sau exec (one-liner); có thể xóa tay trong /tmp nếu cần
+    exec bash "${root}/scripts/install.sh" "$@"
+}
+
 set -euo pipefail
 
 # -----------------------------------------------------------------------------
-# Đường dẫn script (symlink openclawsetup → install.sh phải resolve đúng lib/)
+# Đường dẫn script (symlink openclawsetup → …/install.sh; có lib/ cùng thư mục)
 # -----------------------------------------------------------------------------
-SCRIPT_PATH="$(readlink -f "${BASH_SOURCE[0]}" 2>/dev/null || realpath "${BASH_SOURCE[0]}" 2>/dev/null || true)"
-if [[ -z "${SCRIPT_PATH}" ]] || [[ ! -f "${SCRIPT_PATH}" ]]; then
-    SCRIPT_PATH="${BASH_SOURCE[0]}"
+SCRIPT_DIR=""
+if [[ -n "${_raw_install}" && -f "${_raw_install}" ]]; then
+    SCRIPT_PATH="$(readlink -f "${_raw_install}" 2>/dev/null || realpath "${_raw_install}" 2>/dev/null || echo "${_raw_install}")"
+    if [[ -n "${SCRIPT_PATH}" && -f "${SCRIPT_PATH}" ]]; then
+        SCRIPT_DIR="$(cd "$(dirname "${SCRIPT_PATH}")" && pwd)"
+    fi
 fi
-SCRIPT_DIR="$(cd "$(dirname "${SCRIPT_PATH}")" && pwd)"
+
+if [[ -z "${SCRIPT_DIR}" ]] || [[ ! -f "${SCRIPT_DIR}/lib/utils.sh" ]]; then
+    _bootstrap_from_github "$@"
+fi
+
 LIB_DIR="${SCRIPT_DIR}/lib"
 
 # -----------------------------------------------------------------------------

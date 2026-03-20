@@ -32,6 +32,10 @@ sudo ./scripts/install.sh
 
 ## One-liner (raw `install.sh`)
 
+`install.sh` tải qua `raw.githubusercontent.com` **không** kèm `lib/`; entrypoint sẽ **tải tarball** `codeload.github.com/.../tar.gz/main`, giải nén và `exec` lại chính nó từ thư mục đầy đủ.
+
+Biến tùy chọn: `DATAONLINE_INSTALLER_REPO` (mặc định `dataonlinevn/openclaw_self_hosted_scripts`), `DATAONLINE_INSTALLER_BRANCH` (mặc định `main`).
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/dataonlinevn/openclaw_self_hosted_scripts/main/scripts/install.sh | sudo bash
 ```

@@ -31,6 +31,8 @@ Script cài đặt tự động trợ lý AI **OpenClaw** trên Ubuntu — **Dat
 curl -fsSL https://raw.githubusercontent.com/dataonlinevn/openclaw_self_hosted_scripts/main/scripts/install.sh | sudo bash
 ```
 
+Lệnh trên chỉ tải `install.sh`; script sẽ **tự tải thêm tarball** cả repo từ GitHub (`codeload.github.com`) rồi chạy tiếp — cần **curl**, **tar** và truy cập GitHub.
+
 **Clone rồi chạy:**
 
 ```bash
