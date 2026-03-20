@@ -35,7 +35,7 @@ _bootstrap_from_github() {
 set -euo pipefail
 
 # -----------------------------------------------------------------------------
-# Đường dẫn script (symlink openclawsetup → …/install.sh; có lib/ cùng thư mục)
+# Đường dẫn script (symlink openclaw → …/install.sh; có lib/ cùng thư mục)
 # -----------------------------------------------------------------------------
 SCRIPT_DIR=""
 if [[ -n "${_raw_install}" && -f "${_raw_install}" ]]; then

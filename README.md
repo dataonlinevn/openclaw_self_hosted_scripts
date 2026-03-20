@@ -35,7 +35,7 @@ cd openclaw_self_hosted_scripts
 sudo ./scripts/install.sh
 ```
 
-Sau lần chạy đầu, script có thể cài lệnh **`openclawsetup`** (bản trong `/opt/dataonline/openclaw-installer/`, symlink tại `/usr/local/bin/`). Chi tiết: [scripts/README.md](scripts/README.md).
+Sau lần chạy đầu, script có thể cài lệnh **`openclaw`** (bản trong `/opt/dataonline/openclaw-installer/`, symlink tại `/usr/local/bin/`). Có thể ghi đè tên lệnh qua biến môi trường `OPENCLAW_GLOBAL_CMD`. Chi tiết: [scripts/README.md](scripts/README.md).
 
 ## Tính năng
 

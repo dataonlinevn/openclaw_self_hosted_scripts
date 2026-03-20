@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2026 DataOnline. DataOnline OpenClaw Auto-Installer.
 #
-# utils.sh — Banner, màu ANSI, logging, root, lệnh global openclawsetup
+# utils.sh — Banner, màu ANSI, logging, root, lệnh global openclaw
 # -----------------------------------------------------------------------------
 
 # -----------------------------------------------------------------------------
@@ -91,10 +91,10 @@ confirm() {
 }
 
 # -----------------------------------------------------------------------------
-# Cài symlink /usr/local/bin/openclawsetup → bản trong /opt/dataonline/...
+# Cài symlink /usr/local/bin/openclaw → bản trong /opt/dataonline/...
 # -----------------------------------------------------------------------------
 OPENCLAW_INSTALLER_DIR="${OPENCLAW_INSTALLER_DIR:-/opt/dataonline/openclaw-installer}"
-OPENCLAW_GLOBAL_CMD="${OPENCLAW_GLOBAL_CMD:-openclawsetup}"
+OPENCLAW_GLOBAL_CMD="${OPENCLAW_GLOBAL_CMD:-openclaw}"
 OPENCLAW_GLOBAL_CMD_PATH="${OPENCLAW_GLOBAL_CMD_PATH:-}"
 
 offer_install_global_command() {

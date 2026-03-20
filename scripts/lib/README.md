@@ -13,7 +13,7 @@ Các file trong **`scripts/lib/`** được `source` từ **`scripts/install.sh`
 
 | File | Vai trò |
 |------|---------|
-| `utils.sh` | ANSI, banner, `log_*` / `print_*`, `check_root`, `confirm`, cài `openclawsetup` |
+| `utils.sh` | ANSI, banner, `log_*` / `print_*`, `check_root`, `confirm`, cài `openclaw` |
 | `checks.sh` | `check_os`, `check_ram`, `check_ports`, `check_network`, `check_docker`, `run_preinstall_checks` |
 | `install-core.sh` | `install_docker`, `setup_install_dir`, `setup_docker_compose`, `start_openclaw`, **`do_install`** |
 | `ufw.sh` | `configure_ufw` — cổng 22, 18789, 18790 |

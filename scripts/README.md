@@ -15,7 +15,7 @@ Thư mục **entry** và các module Bash (`lib/`) cho DataOnline OpenClaw Auto-
 scripts/
 ├── install.sh          # Menu chính — nạp lib/
 └── lib/
-    ├── utils.sh        # Banner, màu, root, logging, openclawsetup
+    ├── utils.sh        # Banner, màu, root, logging, openclaw (lệnh global)
     ├── checks.sh       # OS, RAM, cổng, mạng, Docker
     ├── install-core.sh # Docker, thư mục deploy, compose, khởi động
     ├── ufw.sh          # Firewall (22, 18789, 18790)
@@ -33,17 +33,17 @@ sudo ./scripts/install.sh
 
 Luôn chạy từ thư mục gốc repo để `install.sh` tìm được `lib/*.sh`.
 
-## Lệnh `openclawsetup`
+## Lệnh `openclaw`
 
 Khi chạy `install.sh` từ bản clone có đủ `install.sh` và `lib/`, script có thể:
 
 1. Sao chép bản cài vào **`/opt/dataonline/openclaw-installer/`**
-2. Tạo symlink **`/usr/local/bin/openclawsetup`** → `install.sh` đã copy
+2. Tạo symlink **`/usr/local/bin/openclaw`** → `install.sh` đã copy
 
 Sau đó:
 
 ```bash
-sudo openclawsetup
+sudo openclaw
 ```
 
 Nếu đã chạy trực tiếp từ thư mục cài trong `/opt/dataonline/openclaw-installer/`, bước copy/symlink được bỏ qua.
