@@ -10,14 +10,14 @@ set -euo pipefail
 INSTALL_DIR="${INSTALL_DIR:-/opt/dataonline/openclaw}"
 
 # -----------------------------------------------------------------------------
-# Docker: -t chỉ khi có TTY đầy đủ (thiếu TTY → "the input device is not a TTY")
+# Docker: compose run mặc định xin TTY — thiếu TTY phải dùng -T (tắt pseudo-TTY)
 # -----------------------------------------------------------------------------
 _run_cli() {
     cd "${INSTALL_DIR}"
     if [[ -t 0 ]] && [[ -t 1 ]]; then
         docker compose exec -it openclaw-gateway node dist/index.js "$@"
     else
-        docker compose exec -i openclaw-gateway node dist/index.js "$@"
+        docker compose exec -i -T openclaw-gateway node dist/index.js "$@"
     fi
 }
 
@@ -28,7 +28,7 @@ do_openclaw_cli() {
     if [[ ! -f "${INSTALL_DIR}/docker-compose.yml" ]]; then
         echo "Chưa cài đặt OpenClaw. Vào menu chính → 1) Cài đặt mới." >&2
         return 1
-    fi  
+    fi
     cd "${INSTALL_DIR}"
     if ! docker compose ps -q openclaw-gateway 2>/dev/null | grep -q .; then
         echo "Gateway chưa chạy. Vào menu chính → 1) Cài đặt mới, hoặc chạy: cd ${INSTALL_DIR} && docker compose up -d" >&2
@@ -89,7 +89,8 @@ _cli_onboard() {
     if [[ -t 0 ]] && [[ -t 1 ]]; then
         docker compose run --rm -it openclaw-cli onboard
     else
-        docker compose run --rm -i openclaw-cli onboard
+        # run: không thêm -T → Docker vẫn cấp TTY mặc định → lỗi "not a TTY"
+        docker compose run --rm -i -T openclaw-cli onboard
     fi
 }
 
