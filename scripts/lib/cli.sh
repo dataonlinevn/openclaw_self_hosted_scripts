@@ -25,6 +25,7 @@ _run_cli() {
 # Menu CLI (cây con)
 # -----------------------------------------------------------------------------
 do_openclaw_cli() {
+    local choice
     if [[ ! -f "${INSTALL_DIR}/docker-compose.yml" ]]; then
         echo "Chưa cài đặt OpenClaw. Vào menu chính → 1) Cài đặt mới." >&2
         return 1
@@ -95,6 +96,7 @@ _cli_onboard() {
 }
 
 _cli_models() {
+    local c m
     while true; do
         echo ""
         echo -e "${C_BRAND}  Models${C_RESET}"
@@ -121,6 +123,7 @@ _cli_models() {
 }
 
 _cli_pairing() {
+    local c ch code
     while true; do
         echo ""
         echo -e "${C_BRAND}  Pairing (DM Telegram, Discord…)${C_RESET}"
@@ -147,6 +150,7 @@ _cli_pairing() {
 }
 
 _cli_devices() {
+    local c id
     while true; do
         echo ""
         echo -e "${C_BRAND}  Devices (trình duyệt)${C_RESET}"
@@ -171,6 +175,7 @@ _cli_devices() {
 }
 
 _cli_config() {
+    local c path val
     while true; do
         echo ""
         echo -e "${C_BRAND}  Config${C_RESET}"
@@ -200,6 +205,7 @@ _cli_config() {
 }
 
 _cli_other() {
+    local c ch plug
     while true; do
         echo ""
         echo -e "${C_BRAND}  Công cụ khác${C_RESET}"

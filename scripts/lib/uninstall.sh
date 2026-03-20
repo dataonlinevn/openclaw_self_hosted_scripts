@@ -14,6 +14,7 @@ source "${SCRIPT_DIR}/utils.sh"
 INSTALL_DIR="/opt/dataonline/openclaw"
 
 do_uninstall() {
+    local confirm
     print_header "GỠ BỎ OPENCLAW"
     if [[ ! -d "${INSTALL_DIR}" ]]; then
         print_warning "Không tìm thấy thư mục cài đặt: ${INSTALL_DIR}"

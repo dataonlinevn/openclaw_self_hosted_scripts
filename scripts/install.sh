@@ -110,6 +110,7 @@ print_support_info() {
 }
 
 main() {
+    local choice
     print_banner
     print_welcome
     check_root

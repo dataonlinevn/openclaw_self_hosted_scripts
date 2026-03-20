@@ -25,15 +25,9 @@ Script cài đặt tự động trợ lý AI **OpenClaw** trên Ubuntu — **Dat
 - **RAM:** Khuyến nghị ≥ 2GB; dưới 2GB script cảnh báo nhưng vẫn cho phép tiếp tục
 - **Quyền:** Root (`sudo`)
 
-## Cài đặt nhanh
+## Cài đặt
 
-```bash
-curl -fsSL https://raw.githubusercontent.com/dataonlinevn/openclaw_self_hosted_scripts/main/scripts/install.sh | sudo bash
-```
-
-Lệnh trên chỉ tải `install.sh`; script sẽ **tự tải thêm tarball** cả repo từ GitHub (`codeload.github.com`) rồi chạy tiếp — cần **curl**, **tar** và truy cập GitHub. Menu và mọi câu hỏi **đọc từ terminal** (`/dev/tty`), không dùng stdin (vì stdin là pipe của `curl`).
-
-**Clone rồi chạy:**
+**Cách dùng khuyến nghị:** clone repo (đủ `scripts/lib/`, menu và Docker/CLI ổn định hơn so với chạy qua pipe).
 
 ```bash
 git clone https://github.com/dataonlinevn/openclaw_self_hosted_scripts.git
@@ -41,7 +35,7 @@ cd openclaw_self_hosted_scripts
 sudo ./scripts/install.sh
 ```
 
-**Lệnh nhanh sau khi cài global:** khi chạy từ bản clone đầy đủ, script có thể sao chép bản cài vào `/opt/dataonline/openclaw-installer/` và tạo symlink `openclawsetup` tại `/usr/local/bin/`. Lần sau: `sudo openclawsetup`. Chi tiết: [scripts/README.md](scripts/README.md).
+Sau lần chạy đầu, script có thể cài lệnh **`openclawsetup`** (bản trong `/opt/dataonline/openclaw-installer/`, symlink tại `/usr/local/bin/`). Chi tiết: [scripts/README.md](scripts/README.md).
 
 ## Tính năng
 
